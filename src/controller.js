@@ -7,6 +7,7 @@ import {
 
 
 app.post('/login',(req,res)=>{
+    console.log('/login req body=', req.body);
     let username = req.body.username;
     let password =  req.body.password;
     let user = users.find( u => u.username === username && u.password === password);
@@ -63,7 +64,48 @@ app.get('/course',(req,res)=>{
     } else {
         res.send(courses);
     }
+})
+
+app.post('/course',(req,res)=>{
+    let title = req.body.title;
+    let description =  req.body.description;
+    let teacher = req.body.teacher;
+    let courseId =  req.body.courseId;
    
+    let course = courses.find( c => c.courseId === courseId );
+    if ( course ) {
+        res.statusCode = 400;
+        res.send({
+            message:'courseId already exits'
+        })
+    } else {
+        courses.push({
+            title,
+            description,
+            teacher,
+            courseId
+        })
+        res.send({
+            message:'Course added Successfully'
+        })
+    }
+})
+
+app.delete('/course/:id',(req,res)=>{
+    let courseId = req.params.id;
+    let courseIndex = courses.findIndex( c => c.courseId == courseId );
+    if ( courseIndex >= 0 ) {
+        res.statusCode = 200;
+        courses.splice(courseIndex, 1);
+        res.send({
+            message:'Delete success'
+        })
+    } else {
+        res.statusCode = 400;
+        res.send({
+            message:'Invalid Course Id'
+        })
+    }
 })
 
 
