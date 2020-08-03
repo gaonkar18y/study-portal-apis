@@ -3,7 +3,7 @@ import app from './appConfig';
 
 import { users, courses } from './study_portal_data';
 
-import { Shops, Products } from './online_mall_data';
+import { Shops, Products, MallUsers } from './online_mall_data';
 
 app.post('/login',(req,res)=>{
     console.log('/login req body=', req.body);
@@ -106,6 +106,24 @@ app.delete('/course/:id',(req,res)=>{
         })
     }
 })
+
+
+// For OnlineMall
+
+app.post('/authenticateUser',(req,res)=>{
+    let username = req.body.username;
+    let password =  req.body.password;
+    let user = MallUsers.find( u => u.username === username && u.password === password);
+    if ( user ) {
+        res.send(user);
+    } else {
+        res.statusCode = 400;
+        res.send({
+            message:'Invalid username or password'
+        })
+    }
+})
+
 
 app.get('/shop',(req,res)=>{
     res.send(Shops);

@@ -25,3 +25,24 @@ export const Products = [
         shops: [1]
     } 
 ]
+
+export const MallUsers = [
+    {
+        username:'admin1',
+        password:'admin123',
+        name:'Admin',
+        role:'admin'
+    },
+    {
+        username:'sahil',
+        password:'sahil23',
+        name:'Sahil',
+        role:'shopkeeper'
+    },
+    {
+        username:'raj',
+        password:'raj23',
+        name:'Raj',
+        role:'guest'
+    }
+]
