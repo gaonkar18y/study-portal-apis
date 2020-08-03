@@ -1,10 +1,9 @@
 
 import app from './appConfig';
 
-import {
-    users, courses
-} from './study_portal_data';
+import { users, courses } from './study_portal_data';
 
+import { Shops, Products } from './online_mall_data';
 
 app.post('/login',(req,res)=>{
     console.log('/login req body=', req.body);
@@ -104,6 +103,67 @@ app.delete('/course/:id',(req,res)=>{
         res.statusCode = 400;
         res.send({
             message:'Invalid Course Id'
+        })
+    }
+})
+
+app.get('/shop',(req,res)=>{
+    res.send(Shops);
+})
+
+app.get('/shop/:id',(req,res)=>{
+    let shopId = req.params.id;
+    if ( shopId) {
+        let shopList = Shops.filter( s => s.shopId == shopId );
+        res.send(shopList);
+    } else {
+        res.statusCode = 400;
+        res.send({
+            message:'Invalid shopId Id'
+        })
+    }
+})
+
+
+app.post('/shop',(req,res)=>{
+    let Name = req.body.Name;
+    let Owner =  req.body.Owner;
+    let Description = req.body.Description;
+    let shopId =  req.body.shopId;
+   
+    let shop = Shops.find( s => s.shopId == shopId );
+    if ( shop ) {
+        res.statusCode = 400;
+        res.send({
+            message:'shopId already exits'
+        })
+    } else {
+        Shops.push({
+            Name,
+            Owner,
+            Description,
+            shopId
+        })
+        res.send({
+            message:'Shop added Successfully'
+        })
+    }
+})
+
+
+app.delete('/shop/:id',(req,res)=>{
+    let shopId = req.params.id;
+    let shopIndex = Shops.findIndex( s => s.shopId == shopId );
+    if ( shopIndex >= 0 ) {
+        res.statusCode = 200;
+        Shops.splice(shopIndex, 1);
+        res.send({
+            message:'Delete success'
+        })
+    } else {
+        res.statusCode = 400;
+        res.send({
+            message:'Invalid Shop Id'
         })
     }
 })
