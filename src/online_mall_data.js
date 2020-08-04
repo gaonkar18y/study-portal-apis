@@ -17,12 +17,14 @@ export const Products = [
     { 
         Name: "Jockey Tshirt", 
         Price: 767, 
-        shops: [2,1]
+        shops: [2,1],
+        productId: 1
     },
     { 
         Name: "Crocket ball", 
         Price: 455, 
-        shops: [1]
+        shops: [1],
+        productId: 2
     } 
 ]
 

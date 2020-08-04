@@ -110,6 +110,31 @@ app.delete('/course/:id',(req,res)=>{
 
 // For OnlineMall
 
+app.post('/mallUser',(req,res)=>{
+    let username = req.body.username;
+    let password =  req.body.password;
+    let role = req.body.role;
+    let name = req.body.name;
+
+    let user = MallUsers.find( u => u.username === username );
+    if ( user ) {
+        res.statusCode = 400;
+        res.send({
+            message:'Username already exits'
+        })
+    } else {
+        MallUsers.push({
+            username,
+            password,
+            name,
+            role
+        })
+        res.send({
+            message:'User added Successfully'
+        })
+    }
+})
+
 app.post('/authenticateUser',(req,res)=>{
     let username = req.body.username;
     let password =  req.body.password;
@@ -185,6 +210,67 @@ app.delete('/shop/:id',(req,res)=>{
         })
     }
 })
+
+app.get('/product',(req,res)=>{
+    res.send(Products);
+})
+
+app.get('/product/:id',(req,res)=>{
+    let productId = req.params.id;
+    if ( productId) {
+        let productList = Products.filter( p => p.productId == productId );
+        res.send(productList);
+    } else {
+        res.statusCode = 400;
+        res.send({
+            message:'Invalid shopId Id'
+        })
+    }
+})
+
+app.post('/product',(req,res)=>{
+    let Name = req.body.Name;
+    let Price =  req.body.Price;
+    let shops = req.body.shops;
+    let productId =  req.body.productId;
+   
+    let product = Products.find( p => p.productId == productId );
+    if ( product ) {
+        res.statusCode = 400;
+        res.send({
+            message:'productId already exits'
+        })
+    } else {
+        Products.push({
+            Name,
+            Price,
+            shops,
+            productId
+        })
+        res.send({
+            message:'Product added Successfully'
+        })
+    }
+})
+
+app.delete('/product/:id',(req,res)=>{
+    let productId = req.params.id;
+    let productIndex = Products.findIndex( p => p.productId == productId );
+    if ( productIndex >= 0 ) {
+        res.statusCode = 200;
+        Products.splice(productIndex, 1);
+        res.send({
+            message:'Delete success'
+        })
+    } else {
+        res.statusCode = 400;
+        res.send({
+            message:'Invalid Product Id'
+        })
+    }
+})
+
+
 
 
 export default app;
