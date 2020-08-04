@@ -1,6 +1,6 @@
 
 import app from './appConfig';
-
+import xml from 'xml';
 import { users, courses } from './study_portal_data';
 
 import { Shops, Products, MallUsers } from './online_mall_data';
@@ -270,6 +270,33 @@ app.delete('/product/:id',(req,res)=>{
     }
 })
 
+
+app.post('/admin/product',(req,res)=>{
+   
+    let reqData =  req.body.root;
+
+    let respObj = {message:'Success'};
+
+    if ( reqData.action == 'Delete' ) {
+        let productId = reqData.productid;
+        let productIndex = Products.findIndex( p => p.productId == productId );
+        if ( productIndex >= 0 ) {
+            res.statusCode = 200;
+            Products.splice(productIndex, 1);
+            respObj = {
+                message:'Delete success'
+            }
+        } else {
+            res.statusCode = 400;
+            respObj = {
+                message:'Invalid Product Id'
+            }
+        }
+    }
+    res.set('Content-Type', 'text/xml');
+    res.send(xml(respObj));
+    
+})
 
 
 
