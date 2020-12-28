@@ -1,52 +1,9 @@
 
-import app from './appConfig';
+import app from '../appConfig';
 import xml from 'xml';
-import { users, courses } from './study_portal_data';
+import { courses } from '../data/study_portal_data';
 
-import { Shops, Products, MallUsers } from './online_mall_data';
-
-app.post('/login',(req,res)=>{
-    console.log('/login req body=', req.body);
-    let username = req.body.username;
-    let password =  req.body.password;
-    let user = users.find( u => u.username === username && u.password === password);
-    if ( user ) {
-        res.send(user);
-    } else {
-        res.statusCode = 400;
-        res.send({
-            message:'Invalid username or password'
-        })
-    }
-})
-
-
-app.post('/register',(req,res)=>{
-    let username = req.body.username;
-    let password =  req.body.password;
-    let role = req.body.role;
-    let email =  req.body.email;
-    let name = req.body.name;
-
-    let user = users.find( u => u.username === username );
-    if ( user ) {
-        res.statusCode = 400;
-        res.send({
-            message:'Username already exits'
-        })
-    } else {
-        users.push({
-            username,
-            password,
-            name,
-            role,
-            email
-        })
-        res.send({
-            message:'Registered Successfully'
-        })
-    }
-})
+import { Shops, Products, MallUsers } from '../data/online_mall_data';
 
 app.get('/course',(req,res)=>{
     let courseId = parseInt(req.query.courseId);

@@ -1,6 +1,7 @@
-import appServer from './controller';
 import cluster from 'cluster';
 import os from 'os';
+
+import appServer from './appConfig';
 
 let activeWorkers = {};
 

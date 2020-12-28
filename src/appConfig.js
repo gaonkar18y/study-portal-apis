@@ -2,27 +2,15 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-import log4js from 'log4js';
-import path from 'path';
 
-require('body-parser-xml')(bodyParser);
+import bodyParserXml from 'body-parser-xml';
+
+bodyParserXml(bodyParser);
+
+import authRoutes from './routes/authRoutes';
+import coursesRoutes from './routes/coursesRoutes';
 
 var app = express();
-
-log4js.configure({
-  appenders: {
-    appLogs: {
-      type: 'file',
-      filename: path.join(__dirname, 'logs/appLogs.log'),
-      maxLogSize: 3000000,
-      backups: 20,
-      compress: true 
-    } 
-  },
-  categories: { default: { appenders: ['appLogs'], level: 'debug' } }
-});
-
-export const logger = log4js.getLogger('appLogs');
 
 app.use(cors());
 app.use(cookieParser());
@@ -37,7 +25,8 @@ app.use(bodyParser.xml({
     explicitArray: false // Only put nodes in array if >1
   }
 }));
- 
 
+app.use('/auth', authRoutes);
+app.use('/courses', coursesRoutes);
 
 export default app;
